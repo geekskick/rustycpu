@@ -1,0 +1,7 @@
+[package]
+name = "simpletron"
+version = "0.1.0"
+authors = ["geekskick <geeks_kick@yahoo.co.uk>"]
+edition = "2018"
+
+[dependencies]

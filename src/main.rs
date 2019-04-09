@@ -1,4 +1,5 @@
 #[derive(Debug)]
+#[derive(PartialEq)]
 enum InstructionSet{
     Mov = 1,
     Show = 2,
@@ -25,6 +26,7 @@ impl InstructionSet{
         }
     }
 }
+
 
 trait Cpu{
     fn load(& mut self, new_mem: Vec<u32>);
@@ -92,6 +94,42 @@ impl Cpu for Simpletron{
                 break;
             }
         }
+    }
+}
+    
+#[cfg(test)]
+mod tests{
+    use super::*;
+    #[test]
+    fn can_convert_to_instructionset(){
+        assert!(InstructionSet::from_i16(0) == InstructionSet::Halt);
+        assert!(InstructionSet::from_i16(1) == InstructionSet::Mov);
+        assert!(InstructionSet::from_i16(2) == InstructionSet::Show);
+        assert!(InstructionSet::from_i16(3) == InstructionSet::Add);
+        assert!(InstructionSet::from_i16(4) == InstructionSet::Addl);
+        assert!(InstructionSet::from_i16(5) == InstructionSet::Nop);
+        assert!(InstructionSet::from_i16(6) == InstructionSet::Sto);
+        assert!(InstructionSet::from_i16(7) == InstructionSet::Movl);
+        assert!(InstructionSet::from_i16(8) == InstructionSet::Halt);
+    }
+    #[test]
+    fn can_load(){
+        let mut s = Simpletron::new();
+        let prog = vec![50];
+        let known_good = prog.clone();
+        s.load(prog);
+        assert!(s.prog_mem.len() == 1024);
+        assert!(s.prog_mem[0] == known_good[0]);
+        assert!(s.prog_mem[1] == 0);
+    }
+    #[test]
+    fn can_fetch(){
+        let mut s = Simpletron::new();
+        let prog = vec![50];
+        let known_good = prog.clone();
+        s.load(prog);
+        assert!(s.fetch() == known_good[0]);
+
     }
 }
 
